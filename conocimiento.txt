@@ -22,3 +22,8 @@ como agrego un nuevo cliente | ve a la seccion de clientes y haz clic en nuevo c
 : hola como estas | hola onechan estoy bien y tu uwu
 : tienes laptops en venta | claro que si puedes ver en la seccion de "productos"
 : chupapi | hola chuapapi
+donde encuentro los productos | se encuentran en la seccion productos :D
+donde ver el historial de pedidos | inicia sesion con tus credenciales en perfil ingresa "historial de pedidos" y ya estas dentro. Espero haberte ayudado sobrino :D
+como cerrar sesion | en perfil hay opcion al final "cerrar sesion" y estaras deslogeado
+quiero ver productos | en la seccion "productos" encontradas todos
+voy a salir aprobado | claro que si
