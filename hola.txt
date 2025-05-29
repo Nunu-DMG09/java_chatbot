@@ -1,0 +1,32 @@
+public class java_chatbot {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String input;
+
+        System.out.println("👋 Hola, soy tu asistente para la administración de la tienda.");
+        System.out.println("Puedes preguntarme cómo agregar, editar o eliminar productos.");
+
+        while (true) {
+            System.out.print("Tú: ");
+            input = sc.nextLine().toLowerCase();
+
+            if (input.contains("salir") || input.contains("adiós")) {
+                System.out.println("Bot: ¡Hasta luego! 👋");
+                break;
+            } else if (input.contains("agregar") || input.contains("añadir producto")) {
+                System.out.println("Bot: Para agregar un producto, ve al panel de productos y haz clic en 'Nuevo Producto'. Luego llena los campos y guarda.");
+            } else if (input.contains("editar") || input.contains("modificar producto")) {
+                System.out.println("Bot: Para editar un producto, haz clic en el icono de lápiz junto al producto que deseas modificar.");
+            } else if (input.contains("eliminar") || input.contains("borrar producto")) {
+                System.out.println("Bot: Para eliminar un producto, selecciona el producto y haz clic en 'Eliminar'.");
+            } else if (input.contains("ver productos") || input.contains("mostrar productos")) {
+                System.out.println("Bot: Puedes ver todos los productos en la sección 'Inventario' del panel de administración.");
+            } else {
+                System.out.println("Bot: Lo siento, no entendí eso. ¿Puedes reformular tu pregunta?");
+            }
+        }
+
+        sc.close();
+    }
+}

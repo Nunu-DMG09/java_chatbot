@@ -1,0 +1,196 @@
+import java.io.*;
+import java.text.Normalizer;
+import java.util.*;
+
+public class java_chatbot {
+
+    static Map<String, String> conocimiento = new HashMap<>();
+    static Map<String, List<String>> palabrasClave = new HashMap<>();
+    static final String ARCHIVO_CONOCIMIENTO = "conocimiento.txt";
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        cargarConocimientoBase(); // conocimiento precargado
+        cargarConocimientoArchivo(); // conocimiento guardado previamente
+
+        System.out.println("Bot: Hola! Soy tu bot aprendiz. Pregunta o ensename cosas (ensenar: pregunta | respuesta).");
+
+        while (true) {
+            System.out.print("Tú: ");
+            String input = sc.nextLine().trim();
+
+            if (input.equalsIgnoreCase("salir")) {
+                System.out.println("Bot: Chau! Nos vemos.");
+                break;
+            }
+
+            if (input.toLowerCase().startsWith("ensenar:")) {
+                manejarEnsenar(input);
+            } else {
+                String respuesta = responder(input);
+                System.out.println("Bot: " + respuesta);
+            }
+        }
+
+        sc.close();
+    }
+
+    // Maneja el comando "ensenar: pregunta | respuesta"
+    public static void manejarEnsenar(String input) {
+        try {
+            String contenido = input.substring(7).trim(); // quitar "ensenar:"
+            String[] partes = contenido.split("\\|", 2);
+
+            if (partes.length == 2) {
+                String preguntaOriginal = partes[0].trim();
+                String respuesta = partes[1].trim();
+
+                if (!preguntaOriginal.isEmpty() && !respuesta.isEmpty()) {
+                    String preguntaNorm = normalizar(preguntaOriginal);
+                    if (conocimiento.containsKey(preguntaNorm)) {
+                        System.out.println("Bot: Ya conozco esa pregunta, pero actualizaré la respuesta.");
+                    }
+                    conocimiento.put(preguntaNorm, respuesta);
+
+                    List<String> claves = extraerPalabrasClave(preguntaOriginal);
+                    palabrasClave.put(preguntaNorm, claves);
+
+                    guardarConocimientoArchivo(preguntaOriginal, respuesta);
+
+                    System.out.println("Bot: Ya aprendi esa pregunta! 😄🧠");
+                } else {
+                    System.out.println("Bot: Ups, pregunta o respuesta vacía. Intenta de nuevo.");
+                }
+            } else {
+                System.out.println("Bot: Usa este formato: ensenar: pregunta | respuesta");
+            }
+        } catch (Exception e) {
+            System.out.println("Bot: Algo salió mal, intenta: ensenar: pregunta | respuesta");
+        }
+    }
+
+    // Responde según la base de conocimiento y palabras clave
+    public static String responder(String inputUsuario) {
+        String inputNorm = normalizar(inputUsuario);
+        List<String> inputPalabras = extraerPalabrasClave(inputUsuario);
+
+        int umbral = 2; // mínimo 2 palabras en común para considerar parecido
+
+        for (String preguntaGuardada : conocimiento.keySet()) {
+            List<String> claves = palabrasClave.get(preguntaGuardada);
+            int contador = 0;
+            for (String palabra : inputPalabras) {
+                if (claves.contains(palabra)) {
+                    contador++;
+                }
+            }
+            if (contador >= umbral) {
+                return conocimiento.get(preguntaGuardada);
+            }
+        }
+        return "No entendí muy bien. ¿Me lo enseñas con este formato? ensenar: pregunta | respuesta";
+    }
+
+    // Normaliza texto (minúsculas, sin tildes ni signos)
+    public static String normalizar(String texto) {
+        texto = texto.toLowerCase();
+        texto = Normalizer.normalize(texto, Normalizer.Form.NFD);
+        texto = texto.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        texto = texto.replaceAll("[^a-z0-9\\s]", "");
+        texto = texto.trim().replaceAll("\\s+", " ");
+        return texto;
+    }
+
+    // Extrae palabras clave simples del texto
+    public static List<String> extraerPalabrasClave(String texto) {
+        texto = normalizar(texto);
+        String[] palabras = texto.split("\\s+");
+        List<String> claves = new ArrayList<>();
+        for (String p : palabras) {
+            if (!p.isEmpty()) {
+                claves.add(p);
+            }
+        }
+        return claves;
+    }
+
+    // Carga la base de conocimiento predefinida en memoria
+    public static void cargarConocimientoBase() {
+        String[][] baseDatos = {
+            {"cuanto cuesta el producto x", "puedes buscar el producto x en el inventario para ver su precio actual"},
+            {"puedo modificar el precio de un producto", "si edita el producto y cambia el precio en el campo correspondiente"},
+            {"como realizo un pedido nuevo", "haz clic en nuevo pedido selecciona los productos y confirma"},
+            {"que pasa si no carga la pagina", "revisa tu conexion o contacta al administrador del sistema"},
+            {"por que no puedo guardar un producto", "asegurate de llenar todos los campos obligatorios"},
+            {"puedo cambiar mi contrasena", "si desde el panel de usuario puedes modificar tu contrasena actual"},
+            {"como inicio sesion como administrador", "ve a la pagina de login e ingresa tus credenciales de administrador"},
+            {"como agrego un producto nuevo", "ve al panel de productos y haz clic en agregar producto llena los datos y guarda"},
+            {"que productos estan en oferta", "los productos en oferta se muestran en la seccion de promociones"},
+            {"olvide mi contrasena que hago", "haz clic en olvide mi contrasena y sigue los pasos para recuperarla"},
+            {"puedo ver los productos mas vendidos", "si en la seccion de reportes encontraras un grafico con los mas vendidos"},
+            {"hay productos sin stock", "si los productos sin stock estan marcados con un icono rojo o aparecen en la seccion de faltantes"},
+            {"puedo ver todos los productos disponibles", "claro en el panel de inventario puedes ver la lista completa"},
+            {"donde veo las ventas del mes", "puedes consultar los reportes mensuales en el panel de administracion"},
+            {"como elimino un producto del sistema", "haz clic en el icono de papelera al lado del producto que quieres borrar"},
+            {"donde veo la informacion de un cliente", "haz clic en el cliente desde la lista para ver sus detalles"},
+            {"cuanto demora el envio", "el envio toma entre 2 a 5 dias habiles dependiendo de la zona"},
+            {"cuanto cuesta el envio", "el envio tiene un costo de s10.00 a nivel nacional"},
+            {"puedo rastrear mi pedido", "si se te dara un codigo de seguimiento al confirmar tu pedido"},
+            {"hola", "hola onechan como estas? uwu"},
+            {"puedes soltar tu gaa", "si maestro kun GAAAAAAAAAA"},
+            {"como agrego un nuevo cliente", "ve a la seccion de clientes y haz clic en nuevo cliente"}
+        };
+
+        for (String[] par : baseDatos) {
+            String preguntaNorm = normalizar(par[0]);
+            String respuesta = par[1];
+            conocimiento.put(preguntaNorm, respuesta);
+            palabrasClave.put(preguntaNorm, extraerPalabrasClave(par[0]));
+        }
+    }
+
+    // Carga el conocimiento almacenado en archivo conocimiento.txt
+    public static void cargarConocimientoArchivo() {
+        File archivo = new File(ARCHIVO_CONOCIMIENTO);
+        if (!archivo.exists()) {
+            // Si no existe, lo creamos vacío
+            try {
+                archivo.createNewFile();
+            } catch (IOException e) {
+                System.out.println("Bot: Error al crear archivo de conocimiento.");
+            }
+            return;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("\\|", 2);
+                if (partes.length == 2) {
+                    String pregunta = partes[0].trim();
+                    String respuesta = partes[1].trim();
+                    String preguntaNorm = normalizar(pregunta);
+                    conocimiento.put(preguntaNorm, respuesta);
+                    palabrasClave.put(preguntaNorm, extraerPalabrasClave(pregunta));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Bot: Error al leer archivo de conocimiento.");
+        }
+    }
+
+    // Guarda una nueva pregunta y respuesta en el archivo conocimiento.txt
+    public static void guardarConocimientoArchivo(String pregunta, String respuesta) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_CONOCIMIENTO, true))) {
+            bw.write(pregunta + " | " + respuesta);
+            bw.newLine();
+        } catch (IOException e) {
+            System.out.println("Bot: Error al guardar el conocimiento en archivo.");
+        }
+    }
+}
+
+
+
+

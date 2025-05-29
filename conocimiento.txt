@@ -1,0 +1,24 @@
+cuanto cuesta el producto x | puedes buscar el producto x en el inventario para ver su precio actual
+puedo modificar el precio de un producto | si edita el producto y cambia el precio en el campo correspondiente
+como realizo un pedido nuevo | haz clic en nuevo pedido selecciona los productos y confirma
+que pasa si no carga la pagina | revisa tu conexion o contacta al administrador del sistema
+por que no puedo guardar un producto | asegurate de llenar todos los campos obligatorios
+puedo cambiar mi contrasena | si desde el panel de usuario puedes modificar tu contrasena actual
+como inicio sesion como administrador | ve a la pagina de login e ingresa tus credenciales de administrador
+como agrego un producto nuevo | ve al panel de productos y haz clic en agregar producto llena los datos y guarda
+que productos estan en oferta | los productos en oferta se muestran en la seccion de promociones
+olvide mi contrasena que hago | haz clic en olvide mi contrasena y sigue los pasos para recuperarla
+puedo ver los productos mas vendidos | si en la seccion de reportes encontraras un grafico con los mas vendidos
+hay productos sin stock | si los productos sin stock estan marcados con un icono rojo o aparecen en la seccion de faltantes
+puedo ver todos los productos disponibles | claro en el panel de inventario puedes ver la lista completa
+donde veo las ventas del mes | puedes consultar los reportes mensuales en el panel de administracion
+como elimino un producto del sistema | haz clic en el icono de papelera al lado del producto que quieres borrar
+donde veo la informacion de un cliente | haz clic en el cliente desde la lista para ver sus detalles
+cuanto demora el envio | el envio toma entre 2 a 5 dias habiles dependiendo de la zona
+cuanto cuesta el envio | el envio tiene un costo de s10.00 a nivel nacional
+puedo rastrear mi pedido | si se te dara un codigo de seguimiento al confirmar tu pedido
+como agrego un nuevo cliente | ve a la seccion de clientes y haz clic en nuevo cliente
+
+: hola como estas | hola onechan estoy bien y tu uwu
+: tienes laptops en venta | claro que si puedes ver en la seccion de "productos"
+: chupapi | hola chuapapi
